@@ -1,0 +1,40 @@
+configuration:
+  unifi_host:
+    name: UniFi controller host
+    description: IP address or hostname of the UniFi console (e.g. the UDR7).
+  unifi_port:
+    name: UniFi controller port
+    description: HTTPS port of the UniFi console, normally 443.
+  unifi_username:
+    name: Username
+    description: A dedicated local UniFi admin account. Do not use a Ubiquiti SSO (cloud) account.
+  unifi_password:
+    name: Password
+    description: Password of the local UniFi account.
+  unifi_site:
+    name: Site
+    description: UniFi site name, normally "default".
+  verify_ssl:
+    name: Verify controller certificate
+    description: Leave off for the console's self-signed certificate.
+  allowed_hosts:
+    name: Allowed hostnames
+    description: Public hostnames a tunnel or reverse proxy forwards to this server (Host header allowlist).
+  allow_create:
+    name: Allow create
+    description: Allow tools that create objects (firewall rules, DNS records, ...). Off = read-only.
+  allow_update:
+    name: Allow update
+    description: Allow tools that change existing settings. Off = read-only.
+  allow_delete:
+    name: Allow delete
+    description: Allow tools that delete objects. Off = read-only.
+  permission_mode:
+    name: Permission mode
+    description: confirm = every allowed change needs a preview and an explicit confirmation; bypass = no confirmation.
+  tool_registration_mode:
+    name: Tool registration mode
+    description: lazy = small tool list, tools loaded on demand (recommended); eager = all tools listed up front.
+  extra_env:
+    name: Extra environment variables
+    description: KEY=VALUE pairs passed to the server, e.g. UNIFI_POLICY_NETWORK_DNS_CREATE=true for a per-category permission.
