@@ -1,0 +1,79 @@
+name: Update UniFi Network MCP
+
+# Checks once a day whether sirkirby/unifi-mcp has published a newer
+# unifi-network-mcp image and, if so, bumps the app to it. Home Assistant
+# then offers the new version as a normal app update.
+
+on:
+  schedule:
+    - cron: "23 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-unifi-network-mcp
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Find the latest published version
+        id: versions
+        run: |
+          set -euo pipefail
+          latest=$(curl -fsSL https://pypi.org/pypi/unifi-network-mcp/json | jq -r '.info.version')
+          current=$(sed -n 's/^version: "\(.*\)"$/\1/p' unifi_network_mcp/config.yaml)
+          if ! [[ "$latest" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ && "$current" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Unexpected version string (latest='$latest', current='$current')" >&2
+            exit 1
+          fi
+          newest=$(printf '%s\n%s\n' "$current" "$latest" | sort -V | tail -n1)
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
+          if [[ "$latest" != "$current" && "$newest" == "$latest" ]]; then
+            echo "update=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "update=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check that the container image is published
+        id: image
+        if: steps.versions.outputs.update == 'true'
+        run: |
+          if docker manifest inspect "ghcr.io/sirkirby/unifi-network-mcp:${{ steps.versions.outputs.latest }}" > /dev/null; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Image for ${{ steps.versions.outputs.latest }} is not on ghcr.io yet; will retry on the next run."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Bump the app version
+        if: steps.image.outputs.ready == 'true'
+        env:
+          CURRENT: ${{ steps.versions.outputs.current }}
+          LATEST: ${{ steps.versions.outputs.latest }}
+        run: |
+          set -euo pipefail
+          sed -i "s|unifi-network-mcp:${CURRENT}|unifi-network-mcp:${LATEST}|" unifi_network_mcp/build.yaml
+          sed -i "s|^version: \"${CURRENT}\"\$|version: \"${LATEST}\"|" unifi_network_mcp/config.yaml
+          {
+            echo "# Changelog"
+            echo
+            echo "## ${LATEST}"
+            echo
+            echo "- Update to \`ghcr.io/sirkirby/unifi-network-mcp:${LATEST}\`."
+            echo "- Upstream changes: https://github.com/sirkirby/unifi-mcp/releases/tag/network/v${LATEST}"
+            echo
+            tail -n +3 unifi_network_mcp/CHANGELOG.md
+          } > CHANGELOG.tmp
+          mv CHANGELOG.tmp unifi_network_mcp/CHANGELOG.md
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add unifi_network_mcp/build.yaml unifi_network_mcp/config.yaml unifi_network_mcp/CHANGELOG.md
+          git commit -m "Update UniFi Network MCP app to ${LATEST}"
+          git push
