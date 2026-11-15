@@ -1,5 +1,5 @@
 name: UniFi Network MCP
-version: "0.45.1"
+version: "0.45.2"
 slug: unifi_network_mcp
 description: >-
   MCP server for the UniFi Network application (sirkirby/unifi-mcp), so AI
