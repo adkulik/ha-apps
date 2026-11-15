@@ -56,3 +56,14 @@ for all categories.
 
 The app version follows the upstream server version. A new app version
 rebuilds the wrapper on top of the matching upstream image.
+
+## Support
+
+If this Home Assistant packaging is useful to you, you can support my work:
+
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub%20Sponsors-sponsor-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/adkulik)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/adkulik)
+
+The UniFi Network MCP server itself is the work of
+[sirkirby](https://github.com/sirkirby/unifi-mcp); please consider supporting
+the upstream project too.
