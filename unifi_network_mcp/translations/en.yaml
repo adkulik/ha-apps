@@ -1,7 +1,7 @@
 configuration:
   unifi_host:
     name: UniFi controller host
-    description: IP address or hostname of the UniFi console (e.g. the UDR7).
+    description: IP address or hostname of the UniFi console. 192.168.1.1 is the UniFi factory default; change it if your gateway uses another address.
   unifi_port:
     name: UniFi controller port
     description: HTTPS port of the UniFi console, normally 443.
@@ -19,7 +19,7 @@ configuration:
     description: Leave off for the console's self-signed certificate.
   allowed_hosts:
     name: Allowed hostnames
-    description: Public hostnames a tunnel or reverse proxy forwards to this server (Host header allowlist).
+    description: Public hostnames a tunnel or reverse proxy forwards to this server (Host header allowlist), e.g. unifi-mcp.example.com. Empty by default; requests through a tunnel are rejected until you add your hostname.
   allow_create:
     name: Allow create
     description: Allow tools that create objects (firewall rules, DNS records, ...). Off = read-only.

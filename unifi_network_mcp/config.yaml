@@ -20,8 +20,7 @@ options:
   unifi_password: ""
   unifi_site: default
   verify_ssl: false
-  allowed_hosts:
-    - unifi-mcp.kulik.network
+  allowed_hosts: []
   allow_create: false
   allow_update: false
   allow_delete: false

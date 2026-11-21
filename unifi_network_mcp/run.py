@@ -55,7 +55,7 @@ def main() -> None:
 
     # Host-header allowlist (DNS rebinding protection stays on):
     # loopback, this container's own hostname, plus the public hostnames
-    # a reverse proxy / tunnel forwards (e.g. unifi-mcp.kulik.network).
+    # a reverse proxy / tunnel forwards (e.g. unifi-mcp.example.com).
     hostname = socket.gethostname()
     hosts = ["localhost", "127.0.0.1", hostname]
     hosts += [h.strip() for h in opts.get("allowed_hosts", []) if h.strip()]

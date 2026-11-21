@@ -19,8 +19,10 @@ Claude -> Cloudflare Access (login) -> Cloudflare Tunnel -> http://<app-hostname
 ```
 
 The app's internal hostname is printed in the log at start-up
-(`MCP endpoint: http://...:3000/mcp`). Add the public hostname you use to
-**Allowed hostnames**.
+(`MCP endpoint: http://...:3000/mcp`). Add the public hostname you use
+(for example `unifi-mcp.example.com`) to **Allowed hostnames**. The list is
+empty by default, so requests that arrive through a tunnel or reverse proxy are
+rejected until you add your own hostname.
 
 The upstream HTTP transport has no login of its own. Never publish it without
 an authenticating proxy in front.
@@ -29,8 +31,11 @@ an authenticating proxy in front.
 
 1. In UniFi, create a dedicated **local** admin account for this app
    (not a Ubiquiti SSO account). A read-only role is enough for read-only use.
-2. Enter the console address, username and password.
-3. Start the app and check the log.
+2. Enter the console address, username and password. The address defaults to
+   `192.168.1.1`, the UniFi factory default; change it if your gateway uses
+   another address.
+3. Add your public hostname to **Allowed hostnames** (see above).
+4. Start the app and check the log.
 
 ### Permissions
 
