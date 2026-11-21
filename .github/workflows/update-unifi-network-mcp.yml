@@ -61,6 +61,14 @@ jobs:
           set -euo pipefail
           sed -i "s|unifi-network-mcp:${CURRENT}|unifi-network-mcp:${LATEST}|" unifi_network_mcp/build.yaml
           sed -i "s|^version: \"${CURRENT}\"\$|version: \"${LATEST}\"|" unifi_network_mcp/config.yaml
+          # An "## Unreleased" section at the top holds wrapper changes made
+          # since the last release; it becomes part of this version's entry.
+          rest=$(tail -n +3 unifi_network_mcp/CHANGELOG.md)
+          unreleased=""
+          if [[ "$(sed -n '3p' unifi_network_mcp/CHANGELOG.md)" == "## Unreleased" ]]; then
+            unreleased=$(awk 'NR>3 && /^## /{exit} NR>4{print}' unifi_network_mcp/CHANGELOG.md)
+            rest=$(awk 'NR>3 && /^## /{found=1} found{print}' unifi_network_mcp/CHANGELOG.md)
+          fi
           {
             echo "# Changelog"
             echo
@@ -68,8 +76,11 @@ jobs:
             echo
             echo "- Update to \`ghcr.io/sirkirby/unifi-network-mcp:${LATEST}\`."
             echo "- Upstream changes: https://github.com/sirkirby/unifi-mcp/releases/tag/network/v${LATEST}"
+            if [[ -n "$unreleased" ]]; then
+              printf '%s\n' "$unreleased" | sed -e '/./,$!d'
+            fi
             echo
-            tail -n +3 unifi_network_mcp/CHANGELOG.md
+            printf '%s\n' "$rest"
           } > CHANGELOG.tmp
           mv CHANGELOG.tmp unifi_network_mcp/CHANGELOG.md
           git config user.name "github-actions[bot]"

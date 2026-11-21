@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- New **Access token** option: clients must send `Authorization: Bearer <token>`.
+- New **Trusted networks** option: networks whose requests skip the token because a proxy there already logs callers in (e.g. the Cloudflared app). Needs a server version that supports it; older ones make the app refuse to start with an explanation.
+- **Breaking:** with a host port set, the app now refuses to start without an access token, so the server is never open on the network without a login. Set a token, or clear the host port.
+- The documentation describes the setups for a tunnel app, LAN, VPN (WireGuard, Tailscale) and a mix, and recommends a Network-only UniFi account instead of a Super Admin.
+
 ## 0.50.0
 
 - Update to `ghcr.io/sirkirby/unifi-network-mcp:0.50.0`.
