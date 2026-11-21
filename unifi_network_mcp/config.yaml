@@ -11,8 +11,13 @@ arch:
 init: false
 startup: application
 boot: auto
-# No host ports: the server is only reachable on the internal Home Assistant
-# app network (e.g. from the Cloudflared app). Never publish it on the LAN.
+# The host port is disabled by default: the server is then only reachable on
+# the internal Home Assistant app network (e.g. from the Cloudflared app).
+# Set a host port in the Network section to reach it from the LAN as well.
+ports:
+  3000/tcp: null
+ports_description:
+  3000/tcp: MCP endpoint (/mcp) on the LAN - no login, leave empty unless needed
 options:
   unifi_host: 192.168.1.1
   unifi_port: 443

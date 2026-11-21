@@ -38,3 +38,5 @@ configuration:
   extra_env:
     name: Extra environment variables
     description: KEY=VALUE pairs passed to the server, e.g. UNIFI_POLICY_NETWORK_DNS_CREATE=true for a per-category permission.
+network:
+  3000/tcp: MCP endpoint (/mcp) on the LAN. No login - leave empty unless you need local access.

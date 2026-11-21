@@ -24,8 +24,22 @@ The app's internal hostname is printed in the log at start-up
 empty by default, so requests that arrive through a tunnel or reverse proxy are
 rejected until you add your own hostname.
 
-The upstream HTTP transport has no login of its own. Never publish it without
-an authenticating proxy in front.
+The upstream HTTP transport has no login of its own. Never publish it to the
+internet without an authenticating proxy in front.
+
+### Local access on the LAN
+
+To let a client on your own network (e.g. VS Code) connect directly:
+
+1. In the app's **Network** section, enter a host port for `3000/tcp`
+   (e.g. `3000`) and restart the app.
+2. Add the Home Assistant IP address (e.g. `192.168.1.10`) to
+   **Allowed hostnames**. If the host port is not `3000`, add `IP:port` too.
+3. Point the client to `http://<home-assistant-ip>:<port>/mcp`.
+
+There is no login on this port: anyone on the LAN who can reach it can use
+the server with the permissions you allowed. Keep it empty if you do not need
+it, or limit access to it in your firewall.
 
 ## Configuration
 
