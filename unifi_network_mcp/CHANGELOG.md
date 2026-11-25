@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.50.3
+
+- Update to `ghcr.io/sirkirby/unifi-network-mcp:0.50.3`.
+- Upstream changes: https://github.com/sirkirby/unifi-mcp/releases/tag/network/v0.50.3
+
 ## 0.50.2
 
 - Update to `ghcr.io/sirkirby/unifi-network-mcp:0.50.2`.
