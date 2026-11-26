@@ -82,6 +82,35 @@ tunnel's own login in front.
    }
    ```
 
+   Claude Desktop (`claude_desktop_config.json`, through the local
+   [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) bridge; needs
+   Node.js):
+
+   ```json
+   {
+     "mcpServers": {
+       "unifi": {
+         "command": "npx",
+         "args": [
+           "mcp-remote", "http://192.168.1.10:3000/mcp",
+           "--allow-http",
+           "--header", "Authorization:${UNIFI_MCP_AUTH}"
+         ],
+         "env": { "UNIFI_MCP_AUTH": "Bearer <token>" }
+       }
+     }
+   }
+   ```
+
+   `--allow-http` is needed because the port is not HTTPS. Keep the header
+   argument without a space after the colon (Windows may split it); the space
+   goes in the environment variable.
+
+   Connectors added in Claude's settings (claude.ai, the mobile apps, and the
+   Connectors page of Claude Desktop) connect from Anthropic's cloud, not from
+   your computer: they cannot reach a LAN address and cannot send this token.
+   For those, use a tunnel app with its own login (see above).
+
 The port speaks plain HTTP, so the token is not encrypted on the way. A VPN
 (WireGuard, Tailscale) encrypts it for you; on a plain LAN, anyone who can
 watch the traffic could read it. Use this port only on a network you trust,
