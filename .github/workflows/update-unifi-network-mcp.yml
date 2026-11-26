@@ -29,12 +29,13 @@ jobs:
           latest=$(curl -fsSL https://pypi.org/pypi/unifi-network-mcp/json | jq -r '.info.version')
           current=$(sed -n 's/^version: "\(.*\)"$/\1/p' unifi_network_mcp/config.yaml)
           # The app version is the upstream version, optionally followed by
-          # "-N" for a wrapper-only release on the same image (e.g. 0.50.3-1).
-          if ! [[ "$latest" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ && "$current" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9]+)?$ ]]; then
+          # a fourth number for a wrapper-only release on the same image (e.g.
+          # 0.50.3.1; Home Assistant would treat "0.50.3-1" as a pre-release).
+          if ! [[ "$latest" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ && "$current" =~ ^[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]; then
             echo "Unexpected version string (latest='$latest', current='$current')" >&2
             exit 1
           fi
-          base=${current%%-*}
+          base=$(cut -d. -f1-3 <<< "$current")
           newest=$(printf '%s\n%s\n' "$base" "$latest" | sort -V | tail -n1)
           echo "current=$current" >> "$GITHUB_OUTPUT"
           echo "base=$base" >> "$GITHUB_OUTPUT"

@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.50.3-1
+## 0.50.3.1
 
 - Wrapper-only release on `ghcr.io/sirkirby/unifi-network-mcp:0.50.3`, which brings the trusted-networks support (sirkirby/unifi-mcp#1110).
 - New **Access token** option: clients must send `Authorization: Bearer <token>`.

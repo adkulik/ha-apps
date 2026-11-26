@@ -98,7 +98,7 @@ the address requests arrive from.
 
 Only list networks where every client is that authenticating proxy. Never
 list your LAN or VPN range: that would turn the token off for it. Trusted
-networks need server version 0.50.3 or newer (app version 0.50.3-1 or newer);
+networks need server version 0.50.3 or newer (app version 0.50.3.1 or newer);
 with an older one the app refuses to start and says so in the log.
 
 ## Configuration
@@ -139,8 +139,8 @@ for all categories.
 ## Updating
 
 The app version follows the upstream server version. A new app version
-rebuilds the wrapper on top of the matching upstream image. A `-N` suffix
-(e.g. `0.50.3-1`) marks a release that only changes this wrapper, on the same
+rebuilds the wrapper on top of the matching upstream image. A fourth number
+(e.g. `0.50.3.1`) marks a release that only changes this wrapper, on the same
 upstream image.
 
 ## Support
