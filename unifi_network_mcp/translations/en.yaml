@@ -20,6 +20,12 @@ configuration:
   allowed_hosts:
     name: Allowed hostnames
     description: Public hostnames a tunnel or reverse proxy forwards to this server (Host header allowlist), e.g. unifi-mcp.example.com. Empty by default; requests through a tunnel are rejected until you add your hostname.
+  auth_token:
+    name: Access token
+    description: 'Clients must send it as "Authorization: Bearer <token>". At least 32 characters, e.g. the output of `openssl rand -hex 32`. Required when a host port is set; leave empty if only an authenticating tunnel app reaches the server.'
+  trusted_networks:
+    name: Trusted networks
+    description: IP addresses or CIDR networks whose requests skip the access token, because a proxy there already logs callers in (e.g. 172.30.32.0/23 for the Cloudflared app on the internal Home Assistant network). Never list your LAN.
   allow_create:
     name: Allow create
     description: Allow tools that create objects (firewall rules, DNS records, ...). Off = read-only.
@@ -39,4 +45,4 @@ configuration:
     name: Extra environment variables
     description: KEY=VALUE pairs passed to the server, e.g. UNIFI_POLICY_NETWORK_DNS_CREATE=true for a per-category permission.
 network:
-  3000/tcp: MCP endpoint (/mcp) on the LAN. No login - leave empty unless you need local access.
+  3000/tcp: MCP endpoint (/mcp) on the LAN or a VPN. Requires an access token - leave empty unless you need direct access.

@@ -1,5 +1,5 @@
 name: UniFi Network MCP
-version: "0.50.3"
+version: "0.50.3-1"
 slug: unifi_network_mcp
 description: >-
   MCP server for the UniFi Network application (sirkirby/unifi-mcp), so AI
@@ -9,15 +9,19 @@ arch:
   - aarch64
   - amd64
 init: false
+# Lets the wrapper read its own port mapping, so it can refuse to publish the
+# server on the network without an access token.
+hassio_api: true
 startup: application
 boot: auto
 # The host port is disabled by default: the server is then only reachable on
 # the internal Home Assistant app network (e.g. from the Cloudflared app).
-# Set a host port in the Network section to reach it from the LAN as well.
+# Set a host port in the Network section to reach it from the LAN or a VPN as
+# well; the app then requires an access token.
 ports:
   3000/tcp: null
 ports_description:
-  3000/tcp: MCP endpoint (/mcp) on the LAN - no login, leave empty unless needed
+  3000/tcp: MCP endpoint (/mcp) on the LAN or VPN - requires an access token
 options:
   unifi_host: 192.168.1.1
   unifi_port: 443
@@ -26,6 +30,8 @@ options:
   unifi_site: default
   verify_ssl: false
   allowed_hosts: []
+  auth_token: ""
+  trusted_networks: []
   allow_create: false
   allow_update: false
   allow_delete: false
@@ -40,6 +46,9 @@ schema:
   unifi_site: str
   verify_ssl: bool
   allowed_hosts:
+    - str
+  auth_token: password?
+  trusted_networks:
     - str
   allow_create: bool
   allow_update: bool
