@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.53.0
+
+- Update to `ghcr.io/sirkirby/unifi-network-mcp:0.53.0`.
+- Upstream changes: https://github.com/sirkirby/unifi-mcp/releases/tag/network/v0.53.0
+
 ## 0.50.3.1
 
 - Wrapper-only release on `ghcr.io/sirkirby/unifi-network-mcp:0.50.3`, which brings the trusted-networks support (sirkirby/unifi-mcp#1110).
